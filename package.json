@@ -17,7 +17,7 @@
   "dependencies": {
     "@codefresh-io/cf-receiver": "0.0.1-alpha19",
     "bluebird": "^3.5.3",
-    "cf-errors": "^0.1.15",
+    "cf-errors": "^0.1.16",
     "compare-versions": "^3.4.0",
     "debug": "^4.1.1",
     "decompress": "^4.2.1",
