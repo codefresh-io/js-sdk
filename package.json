@@ -32,7 +32,7 @@
     "recursive-readdir": "^2.2.2",
     "request": "2.88.2",
     "request-promise": "4.2.6",
-    "requestretry": "^4.1.2",
+    "requestretry": "^7.0.0",
     "swagger-client": "~3.12.2",
     "uniqid": "^5.2.0",
     "uuid": "^3.3.2"
