@@ -275,7 +275,7 @@ describe('ConfigManager', () => {
         });
 
         it('should do a fallback in case there was a failure during user validation', async () => {
-            jest.resetModuleRegistry();
+            jest.resetModules();
             const token = 'token';
             const url = 'url';
 
