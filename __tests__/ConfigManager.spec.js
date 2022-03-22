@@ -32,7 +32,7 @@ jest.mock('fs', () => {
 
 jest.mock('fs-extra', () => ({ mkdirp: jest.fn() }));
 
-jest.mock('bluebird', () => ({ promisify: func => func }));
+jest.mock('bluebird', () => ({ promisify: (func) => func }));
 
 jest.spyOn(manager, 'clearConfig');
 jest.spyOn(manager, '_getConfigFilePath');
@@ -40,7 +40,6 @@ jest.spyOn(manager, '_setConfigFilePath');
 jest.spyOn(manager, '_loadConfig');
 jest.spyOn(manager, 'addContext');
 jest.spyOn(manager, 'isConfigLoaded');
-
 
 const CONTEXTS = {
     contexts: {
@@ -50,15 +49,14 @@ const CONTEXTS = {
     'current-context': 'jwt',
 };
 
-
 describe('ConfigManager', () => {
     beforeEach(() => {
         const testData = { test: 'test' };
         fs._readFile = jest.fn(() => testData);
         fs._writeFile = jest.fn();
         fse.mkdirp.mockClear();
-        yaml.safeDump = jest.fn(data => data);
-        yaml.safeLoad = jest.fn(data => data);
+        yaml.safeDump = jest.fn((data) => data);
+        yaml.safeLoad = jest.fn((data) => data);
     });
 
     describe('#_loadConfig', () => {

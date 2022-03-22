@@ -1,8 +1,7 @@
 const _ = require('lodash');
 const { Codefresh, Config } = require('../index');
-const Clusters = require('../lib/logic/clusters.logic.js');
-const Workflows = require('../lib/logic/workflows.logic.js');
-
+const Clusters = require('../lib/logic/clusters.logic');
+const Workflows = require('../lib/logic/workflows.logic');
 
 jest.mock('fs', () => ({
     readdirSync: () => [
@@ -17,7 +16,6 @@ jest.mock('fs-extra', () => ({ mkdirp: () => ({}) }));
 
 jest.mock('../lib/logic/clusters.logic.js');
 jest.mock('../lib/logic/workflows.logic.js');
-
 
 const swaggerApis = {
     clusters: { clusters_list: () => 'clusters_list' },
@@ -40,7 +38,6 @@ const spec = {
         },
     },
 };
-
 
 describe('Sdk', () => {
     describe('loading', () => {

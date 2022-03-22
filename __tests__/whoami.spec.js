@@ -36,7 +36,6 @@ jest.mock('../helpers/http', () => {
     return { Http: HttpConstructor };
 });
 
-
 describe('whoami', () => {
     beforeEach(() => {
         Http.__reset();

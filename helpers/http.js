@@ -4,7 +4,7 @@ const debug = require('debug')('codefresh:sdk:http');
 const defaults = require('../lib/defaults');
 const { version } = require('../package.json');
 
-const { handleErrors } = require('../helpers/error');
+const { handleErrors } = require('./error');
 
 const RETRY_STATUS_CODES = [502, 503, 504];
 const RETRY_STRATEGY = (err, response) => {

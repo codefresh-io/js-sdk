@@ -8,7 +8,7 @@ const { Http } = require('../helpers/http');
 const { ConfigManager, contexts } = require('../lib/auth');
 const defaults = require('../lib/defaults');
 
-jest.mock('swagger-client', () => jest.fn(options => options));
+jest.mock('swagger-client', () => jest.fn((options) => options));
 
 jest.mock('../helpers/http', () => {
     let response = { test: 'test' };

@@ -4,7 +4,7 @@ const defaults = require('../lib/defaults');
 const { postProcessApi, _resolveArgs, _wrapHandler } = require('../helpers/api');
 const { handleErrors } = require('../helpers/error');
 const { Http } = require('../helpers/http');
-const { version } = require('../package');
+const { version } = require('../package.json');
 
 jest.mock('../helpers/error', () => ({ handleErrors: jest.fn() }));
 
@@ -49,7 +49,6 @@ const swaggerApis = {
         workfows_same_interface: () => 'workfows_same_interface',
     },
 };
-
 
 describe('helpers', () => {
     describe('api', () => {
@@ -147,7 +146,7 @@ describe('helpers', () => {
 
     describe('http', () => {
         beforeEach(() => {
-            JSON.parse = jest.fn(res => res);
+            JSON.parse = jest.fn((res) => res);
         });
 
         it('should use defaults when request options are not provided', () => {

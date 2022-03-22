@@ -38,7 +38,7 @@ const getCurrentAccount = async (context) => {
 
     const accounts = _.get(user, 'account', {});
     const accountInfo = _.chain(accounts)
-        .filter(account => account.name === user.activeAccountName)
+        .filter((account) => account.name === user.activeAccountName)
         .get('[0]', {})
         .pick('name', 'runtimeEnvironment')
         .value();
