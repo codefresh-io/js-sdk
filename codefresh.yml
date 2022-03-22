@@ -15,21 +15,21 @@ steps:
   install_dependencies:
     title: 'Installing testing dependencies'
     stage: CI
-    image: codefresh/node-tester-image:10.13.0
+    image: codefresh/node-tester-image:10.15.3
     commands:
         - yarn install --frozen-lockfile
 
   eslint:
     title: 'Running linting logic'
     stage: CI
-    image: codefresh/node-tester-image:10.13.0
+    image: codefresh/node-tester-image:10.15.3
     commands:
         - yarn eslint
 
   unit-tests:
     stage: CI
     title: 'Running unit tests'
-    image: codefresh/node-tester-image:10.13.0
+    image: codefresh/node-tester-image:10.15.3
     commands:
         - yarn test
 
