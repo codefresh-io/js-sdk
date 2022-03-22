@@ -5,10 +5,6 @@ const mockedClose = jest.fn();
 const mockedSubscribe = jest.fn();
 jest.mock('@codefresh-io/cf-receiver', () => ({
     CfReceiverService: class CfReceiverService {
-        constructor() {
-            return null;
-        }
-
         watch() {
             return this;
         }
@@ -23,7 +19,6 @@ jest.mock('@codefresh-io/cf-receiver', () => ({
     },
 }));
 
-
 describe('logs helpers', () => {
     beforeEach(() => {
         mockedClose.mockClear();
@@ -33,7 +28,7 @@ describe('logs helpers', () => {
     it('should close ws connection with flag -f and with failure result', async () => {
         const sdk = _.set({}, 'config.context', { url: String(), token: String() });
         mockedSubscribe.mockReturnValue(null);
-        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, true, sdk).catch(err => err);
+        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, true, sdk).catch((err) => err);
         expect(mockedClose.mock.calls.length).toEqual(1);
         expect(_.isError(result)).toEqual(true);
     });
@@ -42,7 +37,7 @@ describe('logs helpers', () => {
         const validMsg = { type: 'message', event: { data: JSON.stringify({ msgID: 'getStatus', payload: null }) } };
         const sdk = _.set({}, 'config.context', { url: String(), token: String() });
         mockedSubscribe.mockReturnValue(validMsg);
-        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, true, sdk).catch(err => err);
+        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, true, sdk).catch((err) => err);
         expect(mockedClose.mock.calls.length).toEqual(1);
         expect(_.isError(result)).toEqual(false);
     });
@@ -51,7 +46,7 @@ describe('logs helpers', () => {
         const validMsg = { type: 'message', event: { data: JSON.stringify({ slot: 'status', payload: 'success' }) } };
         const sdk = _.set({}, 'config.context', { url: String(), token: String() });
         mockedSubscribe.mockReturnValue(validMsg);
-        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, true, sdk).catch(err => err);
+        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, true, sdk).catch((err) => err);
         expect(mockedClose.mock.calls.length).toEqual(1);
         expect(_.isError(result)).toEqual(false);
     });
@@ -59,7 +54,7 @@ describe('logs helpers', () => {
     it('should close ws connection without flag -f and with failure result', async () => {
         const sdk = _.set({}, 'config.context', { url: String(), token: String() });
         mockedSubscribe.mockReturnValue(null);
-        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, false, sdk).catch(err => err);
+        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, false, sdk).catch((err) => err);
         expect(mockedClose.mock.calls.length).toEqual(1);
         expect(_.isError(result)).toEqual(true);
     });
@@ -68,7 +63,7 @@ describe('logs helpers', () => {
         const validMsg = { type: 'message', event: { data: JSON.stringify({ slot: 'keepAlive' }) } };
         const sdk = _.set({}, 'config.context', { url: String(), token: String() });
         mockedSubscribe.mockReturnValue(validMsg);
-        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, false, sdk).catch(err => err);
+        const result = await logsHelper.showWorkflowLogsByWebsocket(null, null, false, sdk).catch((err) => err);
         expect(mockedClose.mock.calls.length).toEqual(1);
         expect(_.isError(result)).toEqual(false);
     });

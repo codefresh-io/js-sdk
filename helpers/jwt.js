@@ -1,7 +1,6 @@
 const debug = require('debug')('codefresh:sdk:jwt');
 const jwt = require('jsonwebtoken');
 
-
 const testJwt = (token) => {
     let isJwt = false;
     try {
