@@ -1,6 +1,6 @@
 {
   "name": "codefresh-sdk",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "Codefresh_api_swagger_3_0_specification",
   "main": "index.js",
   "author": {
