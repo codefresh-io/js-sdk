@@ -1,6 +1,6 @@
 {
   "name": "codefresh-sdk",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "Codefresh_api_swagger_3_0_specification",
   "main": "index.js",
   "author": {
@@ -17,7 +17,8 @@
   "resolutions": {
     "bl": "^1.2.3",
     "websocket-extensions": "^0.1.4",
-    "json-schema": "^0.4.0"
+    "json-schema": "^0.4.0",
+    "fast-json-patch": "^3.1.1"
   },
   "dependencies": {
     "@codefresh-io/cf-receiver": "0.0.1-alpha19",
