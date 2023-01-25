@@ -1,6 +1,6 @@
 {
   "name": "codefresh-sdk",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "description": "Codefresh_api_swagger_3_0_specification",
   "main": "index.js",
   "author": {
@@ -17,7 +17,8 @@
   "resolutions": {
     "bl": "^1.2.3",
     "websocket-extensions": "^0.1.4",
-    "json-schema": "^0.4.0"
+    "json-schema": "^0.4.0",
+    "fast-json-patch": "^3.1.1"
   },
   "dependencies": {
     "@codefresh-io/cf-receiver": "0.0.1-alpha19",
@@ -28,10 +29,10 @@
     "firebase": "git+https://github.com/codefresh-io/firebase.git#80b2ed883ff281cd67b53bd0f6a0bbd6f330fed5",
     "fs-extra": "^7.0.1",
     "js-yaml": "^3.13.1",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "recursive-readdir": "^2.2.2",
+    "recursive-readdir": "^2.2.3",
     "request": "2.88.2",
     "request-promise": "4.2.6",
     "requestretry": "^7.0.2",
