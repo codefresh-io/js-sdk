@@ -1,6 +1,6 @@
 {
   "name": "codefresh-sdk",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "description": "Codefresh_api_swagger_3_0_specification",
   "main": "index.js",
   "author": {
@@ -26,7 +26,7 @@
     "cf-errors": "^0.1.16",
     "compare-versions": "^3.4.0",
     "debug": "^4.1.1",
-    "firebase": "git+https://github.com/codefresh-io/firebase.git#80b2ed883ff281cd67b53bd0f6a0bbd6f330fed5",
+    "firebase": "9.22.2",
     "fs-extra": "^7.0.1",
     "js-yaml": "^3.13.1",
     "jsonwebtoken": "^8.4.0",
