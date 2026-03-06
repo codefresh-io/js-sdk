@@ -1,3 +1,4 @@
+const { randomUUID: uuidV4 } = require('crypto');
 const _ = require('lodash');
 const request = require('requestretry');
 const debug = require('debug')('codefresh:sdk:http');
@@ -18,6 +19,10 @@ const RETRY_STRATEGY = (err, response) => {
     }
     return RETRY_STATUS_CODES.includes(response.statusCode);
 };
+
+const API_ENDPOINT_PATTERNS = [
+    'api/pipelines/run/',
+];
 
 function _hideHeaders(config) {
     const _config = _.cloneDeep(config);
@@ -67,6 +72,9 @@ const Http = (options) => {
 
             if (_.startsWith(req.url, '/') && baseUrl) {
                 req.url = `${baseUrl}${req.url}`;
+            }
+            if (API_ENDPOINT_PATTERNS.some((p) => req.url.includes(p))) {
+                req.qs = { ...req.qs, requestId: uuidV4() };
             }
             const response = await handler(...args);
             debug(`status: ${response.statusCode}`);
