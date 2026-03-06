@@ -74,7 +74,7 @@ const Http = (options) => {
                 req.url = `${baseUrl}${req.url}`;
             }
             if (API_ENDPOINT_PATTERNS.some((p) => req.url.includes(p))) {
-                req.qs = { ...req.qs, requestId: uuidV4() };
+                req.qs = { ...req.qs, reqId: uuidV4() };
             }
             const response = await handler(...args);
             debug(`status: ${response.statusCode}`);
