@@ -14,13 +14,11 @@ steps:
 
   obtain_id_token:
     title: Obtain OIDC ID Token
-    stage: clone
     type: obtain-oidc-id-token
     arguments:
       AUDIENCE: codefresh-shared-services-account
 
   assume_codefresh_inc_get_asm_secrets_role:
-    stage: clone
     type: aws-sts-assume-role-with-web-identity
     title: Assume codefresh-inc-get-asm-secrets IRSA role
     arguments:
@@ -29,7 +27,6 @@ steps:
       ROLE_ARN: arn:aws:iam::734022025880:role/codefresh-inc-get-asm-secrets
 
   export_secrets:
-    stage: clone
     image: quay.io/codefresh/codefresh-shell:0.4.0
     title: Get secrets from AWS Secrets Manager
     environment:
