@@ -12,6 +12,34 @@ steps:
     repo: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}'
     revision: '${{CF_REVISION}}'
 
+  obtain_id_token:
+    title: Obtain OIDC ID Token
+    type: obtain-oidc-id-token
+    arguments:
+      AUDIENCE: codefresh-shared-services-account
+
+  assume_codefresh_inc_get_asm_secrets_role:
+    type: aws-sts-assume-role-with-web-identity
+    title: Assume codefresh-inc-get-asm-secrets IRSA role
+    arguments:
+      ROLE_SESSION_NAME: codefresh-inc-get-asm-secrets
+      WEB_IDENTITY_TOKEN: ${{ID_TOKEN}}
+      ROLE_ARN: arn:aws:iam::734022025880:role/codefresh-inc-get-asm-secrets
+
+  export_secrets:
+    image: quay.io/codefresh/codefresh-shell:0.4.0
+    title: Get secrets from AWS Secrets Manager
+    environment:
+      - AWS_REGION=us-east-1
+      - AWS_ASM_SECRET_NAME=global/pipelines/codefresh-inc/npm
+    commands:
+      - | #shell
+        set +x
+
+        aws secretsmanager get-secret-value --secret-id $AWS_ASM_SECRET_NAME --query SecretString --output text \
+          | jq -r 'to_entries[] | "\(.key)=\(.value)"' \
+          | xargs -L1 cf_export --mask
+
   install_dependencies:
     title: 'Installing testing dependencies'
     stage: CI
