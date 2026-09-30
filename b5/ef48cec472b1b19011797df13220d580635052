@@ -1,0 +1,16 @@
+lib/auth/contexts/Context.js
+  h_9fd7d1a18c4091 2,8
+package.json
+  h_9fd7d1a18c4091 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b5ef48cec472b1b19011797df13220d580635052",
+  "prompts": {},
+  "humans": {
+    "h_9fd7d1a18c4091": {
+      "author": "Alina <alina.shportiuk@codefresh.io>"
+    }
+  }
+}
