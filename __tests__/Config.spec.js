@@ -66,13 +66,13 @@ describe('Config', () => {
             const options = { apiKey: undefined };
 
             await expect(Config._fromProvided(options)).rejects.toThrow(CFError);
-            expect(Config._initializeConfig).not.toBeCalled();
+            expect(Config._initializeConfig).not.toHaveBeenCalled();
         });
 
         it('should throw on url being null', async () => {
             const options = { apiKey: 'api key', url: null };
             await expect(Config._fromProvided(options)).rejects.toThrow(CFError);
-            expect(Config._initializeConfig).not.toBeCalled();
+            expect(Config._initializeConfig).not.toHaveBeenCalled();
         });
 
         it('should rethrow if something breaks at following operations', async () => {
@@ -82,15 +82,15 @@ describe('Config', () => {
             });
 
             await expect(Config._fromProvided(options)).rejects.toThrow(CFError);
-            expect(Config._initializeConfig).toBeCalled();
+            expect(Config._initializeConfig).toHaveBeenCalled();
         });
 
         it('should continue processing when api key is provided using default url', async () => {
             const options = { apiKey: 'api key' };
             await Config._fromProvided(options);
 
-            expect(CONFIG_MANAGER.createContext).lastCalledWith({ apiKey: options.apiKey, url: defaults.URL });
-            expect(Config._initializeConfig).lastCalledWith(expect.objectContaining({
+            expect(CONFIG_MANAGER.createContext).toHaveBeenLastCalledWith({ apiKey: options.apiKey, url: defaults.URL });
+            expect(Config._initializeConfig).toHaveBeenLastCalledWith(expect.objectContaining({
                 token: options.apiKey,
                 url: defaults.URL,
             }), options);
@@ -100,8 +100,8 @@ describe('Config', () => {
             const options = { apiKey: 'api key', url: 'url' };
             await Config._fromProvided(options);
 
-            expect(CONFIG_MANAGER.createContext).lastCalledWith({ apiKey: options.apiKey, url: options.url });
-            expect(Config._initializeConfig).lastCalledWith(expect.objectContaining({
+            expect(CONFIG_MANAGER.createContext).toHaveBeenLastCalledWith({ apiKey: options.apiKey, url: options.url });
+            expect(Config._initializeConfig).toHaveBeenLastCalledWith(expect.objectContaining({
                 token: options.apiKey,
                 url: options.url,
             }), options);
@@ -121,7 +121,7 @@ describe('Config', () => {
             const options = {};
             delete process.env[defaults.CF_TOKEN_ENV];
             await expect(Config._fromEnv(options)).rejects.toThrow(CFError);
-            expect(Config._fromProvided).not.toBeCalled();
+            expect(Config._fromProvided).not.toHaveBeenCalled();
         });
 
         it('should rethrow if something breaks at following operations', async () => {
@@ -132,7 +132,7 @@ describe('Config', () => {
             });
 
             await expect(Config._fromEnv(options)).rejects.toThrow(CFError);
-            expect(Config._fromProvided).toBeCalled();
+            expect(Config._fromProvided).toHaveBeenCalled();
         });
 
         it('should continue processing when process.env.CF_API_KEY is provided', async () => {
@@ -142,7 +142,7 @@ describe('Config', () => {
             const options = {};
             await Config._fromEnv(options);
 
-            expect(Config._fromProvided).lastCalledWith({ apiKey: testApiKey, url: undefined });
+            expect(Config._fromProvided).toHaveBeenLastCalledWith({ apiKey: testApiKey, url: undefined });
         });
 
         it('should continue processing when process.env.CF_API_KEY and process.env.CF_URL are provided', async () => {
@@ -155,7 +155,7 @@ describe('Config', () => {
             const options = {};
             await Config._fromEnv(options);
 
-            expect(Config._fromProvided).lastCalledWith({ apiKey: testApiKey, url: testUrl });
+            expect(Config._fromProvided).toHaveBeenLastCalledWith({ apiKey: testApiKey, url: testUrl });
         });
     });
 
@@ -171,20 +171,20 @@ describe('Config', () => {
         it('should load config from default path when not specified', async () => {
             const options = {};
             await Config.fromCodefreshConfig(options);
-            expect(CONFIG_MANAGER.loadConfig).toBeCalledWith({ configFilePath: defaults.CF_CONFIG_PATH });
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalledWith({ configFilePath: defaults.CF_CONFIG_PATH });
         });
 
         it('should load config form path at process.env.CFCONFIG', async () => {
             process.env[defaults.CF_CONFIG_ENV] = 'path';
             const options = {};
             await Config.fromCodefreshConfig(options);
-            expect(CONFIG_MANAGER.loadConfig).toBeCalledWith({ configFilePath: process.env[defaults.CF_CONFIG_ENV] });
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalledWith({ configFilePath: process.env[defaults.CF_CONFIG_ENV] });
         });
 
         it('should load config from specific path when provided', async () => {
             const options = { configPath: 'path' };
             await Config.fromCodefreshConfig(options);
-            expect(CONFIG_MANAGER.loadConfig).toBeCalledWith({ configFilePath: options.configPath });
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalledWith({ configFilePath: options.configPath });
         });
 
         it('should throw on no such context', async () => {
@@ -193,9 +193,9 @@ describe('Config', () => {
 
             await expect(Config.fromCodefreshConfig(options)).rejects.toThrow(CFError);
 
-            expect(CONFIG_MANAGER.loadConfig).toBeCalled();
-            expect(CONFIG_MANAGER.getContextByName).toBeCalledWith(options.context);
-            expect(Config._initializeConfig).not.toBeCalled();
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalled();
+            expect(CONFIG_MANAGER.getContextByName).toHaveBeenCalledWith(options.context);
+            expect(Config._initializeConfig).not.toHaveBeenCalled();
         });
 
         it('should throw on no current context', async () => {
@@ -204,9 +204,9 @@ describe('Config', () => {
 
             await expect(Config.fromCodefreshConfig(options)).rejects.toThrow(CFError);
 
-            expect(CONFIG_MANAGER.loadConfig).toBeCalled();
-            expect(CONFIG_MANAGER.getCurrentContext).toBeCalled();
-            expect(Config._initializeConfig).not.toBeCalled();
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalled();
+            expect(CONFIG_MANAGER.getCurrentContext).toHaveBeenCalled();
+            expect(Config._initializeConfig).not.toHaveBeenCalled();
         });
 
         it('should rethrow if something breaks at following operations', async () => {
@@ -217,7 +217,7 @@ describe('Config', () => {
             });
 
             await expect(Config.fromCodefreshConfig(options)).rejects.toThrow(CFError);
-            expect(Config._initializeConfig).toBeCalled();
+            expect(Config._initializeConfig).toHaveBeenCalled();
         });
 
         it('should not get current context when getting by name', async () => {
@@ -226,10 +226,10 @@ describe('Config', () => {
 
             await Config.fromCodefreshConfig(options);
 
-            expect(CONFIG_MANAGER.loadConfig).toBeCalled();
-            expect(CONFIG_MANAGER.getContextByName).toBeCalledWith(options.context);
-            expect(CONFIG_MANAGER.getCurrentContext).not.toBeCalled();
-            expect(Config._initializeConfig).toBeCalled();
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalled();
+            expect(CONFIG_MANAGER.getContextByName).toHaveBeenCalledWith(options.context);
+            expect(CONFIG_MANAGER.getCurrentContext).not.toHaveBeenCalled();
+            expect(Config._initializeConfig).toHaveBeenCalled();
         });
 
         it('should not get context by name when name is not specified', async () => {
@@ -237,10 +237,10 @@ describe('Config', () => {
 
             await Config.fromCodefreshConfig(options);
 
-            expect(CONFIG_MANAGER.loadConfig).toBeCalled();
-            expect(CONFIG_MANAGER.getContextByName).not.toBeCalled();
-            expect(CONFIG_MANAGER.getCurrentContext).toBeCalled();
-            expect(Config._initializeConfig).toBeCalled();
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalled();
+            expect(CONFIG_MANAGER.getContextByName).not.toHaveBeenCalled();
+            expect(CONFIG_MANAGER.getCurrentContext).toHaveBeenCalled();
+            expect(Config._initializeConfig).toHaveBeenCalled();
         });
 
         it('should use NoAuthContext when no contexts are at file with default url (when not provided)', async () => {
@@ -249,9 +249,9 @@ describe('Config', () => {
 
             const config = await Config.fromCodefreshConfig(options);
 
-            expect(CONFIG_MANAGER.loadConfig).toBeCalled();
-            expect(CONFIG_MANAGER.hasContexts).toBeCalled();
-            expect(Config._initializeConfig).toBeCalled();
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalled();
+            expect(CONFIG_MANAGER.hasContexts).toHaveBeenCalled();
+            expect(Config._initializeConfig).toHaveBeenCalled();
 
             expect(config.context).not.toBeNull();
             expect(config.context).toBeInstanceOf(contexts.NoAuthContext);
@@ -264,9 +264,9 @@ describe('Config', () => {
 
             const config = await Config.fromCodefreshConfig(options);
 
-            expect(CONFIG_MANAGER.loadConfig).toBeCalled();
-            expect(CONFIG_MANAGER.hasContexts).toBeCalled();
-            expect(Config._initializeConfig).toBeCalled();
+            expect(CONFIG_MANAGER.loadConfig).toHaveBeenCalled();
+            expect(CONFIG_MANAGER.hasContexts).toHaveBeenCalled();
+            expect(Config._initializeConfig).toHaveBeenCalled();
 
             expect(config.context).not.toBeNull();
             expect(config.context).toBeInstanceOf(contexts.NoAuthContext);
@@ -303,7 +303,7 @@ describe('Config', () => {
             const options = {};
 
             await expect(Config._initializeConfig(context, options)).rejects.toThrow(CFError);
-            expect(Http).not.toBeCalled();
+            expect(Http).not.toHaveBeenCalled();
         });
 
         it('should use context.url as baseUrl for Http baseUrl when not specified', async () => {
@@ -315,8 +315,8 @@ describe('Config', () => {
 
             await Config._initializeConfig(context, options);
 
-            expect(context.prepareHttpOptions).toBeCalled();
-            expect(Http).toBeCalledWith({ baseUrl: context.url });
+            expect(context.prepareHttpOptions).toHaveBeenCalled();
+            expect(Http).toHaveBeenCalledWith({ baseUrl: context.url });
         });
 
         it('should append context http options to http config', async () => {
@@ -329,8 +329,8 @@ describe('Config', () => {
 
             await Config._initializeConfig(context, options);
 
-            expect(context.prepareHttpOptions).toBeCalled();
-            expect(Http).toBeCalledWith(_.merge(options.request, testHttpOptions)); // baseUrl added to options.request
+            expect(context.prepareHttpOptions).toHaveBeenCalled();
+            expect(Http).toHaveBeenCalledWith(_.merge(options.request, testHttpOptions)); // baseUrl added to options.request
         });
 
         it('should not override http config with context http options', async () => {
@@ -343,8 +343,8 @@ describe('Config', () => {
 
             await Config._initializeConfig(context, options);
 
-            expect(context.prepareHttpOptions).toBeCalled();
-            expect(Http).toBeCalledWith(options.request); // baseUrl added to options.request
+            expect(context.prepareHttpOptions).toHaveBeenCalled();
+            expect(Http).toHaveBeenCalledWith(options.request); // baseUrl added to options.request
         });
 
         it('should not load spec when provided', async () => {
@@ -356,7 +356,7 @@ describe('Config', () => {
             const options = { spec: { json: testSpec } };
             await Config._initializeConfig(context, options);
 
-            expect(Http.__getClient()).not.toBeCalled();
+            expect(Http.__getClient()).not.toHaveBeenCalled();
             expect(options.spec.json).toEqual(testSpec);
         });
 
@@ -370,7 +370,10 @@ describe('Config', () => {
             const options = {};
             await Config._initializeConfig(context, options);
 
-            expect(Http.__getClient()).toBeCalledWith({ url: `${context.url}${defaults.SPEC_URL_SUFFIX}`, qs: { disableFilter: true } });
+            expect(Http.__getClient()).toHaveBeenCalledWith({
+                url: `${context.url}${defaults.SPEC_URL_SUFFIX}`,
+                qs: { disableFilter: true },
+            });
             expect(options.spec.json).toEqual(loadedSpec);
         });
 
@@ -384,7 +387,7 @@ describe('Config', () => {
             const options = { spec: { url: 'url' } };
             await Config._initializeConfig(context, options);
 
-            expect(Http.__getClient()).toBeCalledWith({ url: options.spec.url, qs: { disableFilter: true } });
+            expect(Http.__getClient()).toHaveBeenCalledWith({ url: options.spec.url, qs: { disableFilter: true } });
             expect(options.spec.json).toEqual(loadedSpec);
         });
 
@@ -397,7 +400,7 @@ describe('Config', () => {
             const options = { spec: { json: jsonStr } };
             await Config._initializeConfig(context, options);
 
-            expect(Http.__getClient()).not.toBeCalled();
+            expect(Http.__getClient()).not.toHaveBeenCalled();
             expect(options.spec.json).toEqual(expect.objectContaining(JSON.parse(jsonStr)));
         });
 
@@ -423,7 +426,7 @@ describe('Config', () => {
             const config = await Config._initializeConfig(context, options);
 
             const swaggerOptions = { http: Http.__getClient(), spec: specJson };
-            expect(Swagger).toBeCalledWith(swaggerOptions);
+            expect(Swagger).toHaveBeenCalledWith(swaggerOptions);
             expect(config.swagger).toEqual(swaggerOptions); // mocked Swagger just returns its options
         });
 
@@ -454,9 +457,9 @@ describe('Config', () => {
 
             await Config.load({ apiKey: 'key' });
 
-            expect(Config._fromProvided).toBeCalled();
-            expect(Config._fromEnv).not.toBeCalled();
-            expect(Config.fromCodefreshConfig).not.toBeCalled();
+            expect(Config._fromProvided).toHaveBeenCalled();
+            expect(Config._fromEnv).not.toHaveBeenCalled();
+            expect(Config.fromCodefreshConfig).not.toHaveBeenCalled();
         });
 
         it('should load from env in case nothing was provided', async () => {
@@ -468,9 +471,9 @@ describe('Config', () => {
 
             await Config.load();
 
-            expect(Config._fromProvided).not.toBeCalled();
-            expect(Config._fromEnv).toBeCalled();
-            expect(Config.fromCodefreshConfig).not.toBeCalled();
+            expect(Config._fromProvided).not.toHaveBeenCalled();
+            expect(Config._fromEnv).toHaveBeenCalled();
+            expect(Config.fromCodefreshConfig).not.toHaveBeenCalled();
         });
 
         it('should load from config in case nothing was provided and env variable does not exist', async () => {
@@ -484,9 +487,9 @@ describe('Config', () => {
 
             await Config.load();
 
-            expect(Config._fromProvided).not.toBeCalled();
-            expect(Config._fromEnv).toBeCalled();
-            expect(Config.fromCodefreshConfig).toBeCalled();
+            expect(Config._fromProvided).not.toHaveBeenCalled();
+            expect(Config._fromEnv).toHaveBeenCalled();
+            expect(Config.fromCodefreshConfig).toHaveBeenCalled();
         });
 
         it('should not load from config in case nothing was provided and env variable returns error different than variable does not exist', async () => { // eslint-disable-line max-len
@@ -502,9 +505,9 @@ describe('Config', () => {
                 await Config.load();
             } catch (err) {
                 expect(err.toString()).toEqual('Error: Could not load config; caused by Error: some error');
-                expect(Config._fromProvided).not.toBeCalled();
-                expect(Config._fromEnv).toBeCalled();
-                expect(Config.fromCodefreshConfig).not.toBeCalled();
+                expect(Config._fromProvided).not.toHaveBeenCalled();
+                expect(Config._fromEnv).toHaveBeenCalled();
+                expect(Config.fromCodefreshConfig).not.toHaveBeenCalled();
                 return;
             }
 
@@ -522,9 +525,9 @@ describe('Config', () => {
 
             await Config.load({ context: 'name' });
 
-            expect(Config._fromProvided).not.toBeCalled();
-            expect(Config._fromEnv).not.toBeCalled();
-            expect(Config.fromCodefreshConfig).toBeCalled();
+            expect(Config._fromProvided).not.toHaveBeenCalled();
+            expect(Config._fromEnv).not.toHaveBeenCalled();
+            expect(Config.fromCodefreshConfig).toHaveBeenCalled();
         });
 
         it('should throw when could not load from context', async () => {
@@ -540,9 +543,9 @@ describe('Config', () => {
 
             await expect(Config.load({ context: 'name' })).rejects.toThrow(CFError);
 
-            expect(Config._fromProvided).not.toBeCalled();
-            expect(Config._fromEnv).not.toBeCalled();
-            expect(Config.fromCodefreshConfig).toBeCalled();
+            expect(Config._fromProvided).not.toHaveBeenCalled();
+            expect(Config._fromEnv).not.toHaveBeenCalled();
+            expect(Config.fromCodefreshConfig).toHaveBeenCalled();
         });
     });
 

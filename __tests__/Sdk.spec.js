@@ -93,7 +93,7 @@ describe('Sdk', () => {
             });
             const sdk = new Codefresh(config);
             await sdk.http();
-            expect(config.http).toBeCalled();
+            expect(config.http).toHaveBeenCalled();
         });
     });
 });

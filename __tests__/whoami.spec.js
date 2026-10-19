@@ -106,7 +106,7 @@ describe('whoami', () => {
             const accountInfo = await getUser(context, true);
 
             expect(accountInfo).toEqual(response);
-            expect(context.prepareHttpOptions).toBeCalled();
+            expect(context.prepareHttpOptions).toHaveBeenCalled();
         });
     });
 
@@ -175,7 +175,7 @@ describe('whoami', () => {
             const accountInfo = await getExecutionContext(context, true);
 
             expect(accountInfo).toEqual(response);
-            expect(context.prepareHttpOptions).toBeCalled();
+            expect(context.prepareHttpOptions).toHaveBeenCalled();
         });
     });
 

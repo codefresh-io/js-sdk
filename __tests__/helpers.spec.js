@@ -131,7 +131,7 @@ describe('helpers', () => {
                 const wrappedFunc = jest.fn();
                 const wrapper = _wrapHandler(wrappedFunc);
                 wrapper(params);
-                expect(wrappedFunc).toBeCalledWith(_.first(_resolveArgs([params])));
+                expect(wrappedFunc).toHaveBeenCalledWith(_.first(_resolveArgs([params])));
             });
 
             it('should _serializeObjectAsQueryParam if any param is object before calling wrapped func', () => {
@@ -139,7 +139,7 @@ describe('helpers', () => {
                 const wrappedFunc = jest.fn();
                 const wrapper = _wrapHandler(wrappedFunc);
                 wrapper(params);
-                expect(wrappedFunc).toBeCalledWith(_.first(_resolveArgs([{ param: { 'param[test]': 'test' } }])));
+                expect(wrappedFunc).toHaveBeenCalledWith(_.first(_resolveArgs([{ param: { 'param[test]': 'test' } }])));
             });
         });
     });
@@ -227,7 +227,7 @@ describe('helpers', () => {
 
             await http(options);
 
-            expect(request).toBeCalledWith(expect.objectContaining({ url: options.url }));
+            expect(request).toHaveBeenCalledWith(expect.objectContaining({ url: options.url }));
         });
 
         it('should use baseUrl when provided url has no host', async () => {
@@ -238,7 +238,7 @@ describe('helpers', () => {
 
             await http(options);
 
-            expect(request).toBeCalledWith(expect.objectContaining({ url: `${initialOptions.baseUrl}${url}` }));
+            expect(request).toHaveBeenCalledWith(expect.objectContaining({ url: `${initialOptions.baseUrl}${url}` }));
         });
 
         it('should handle errors', async () => {
@@ -248,7 +248,7 @@ describe('helpers', () => {
 
             await http(options);
 
-            expect(handleErrors).toBeCalledWith(request.__getResponse());
+            expect(handleErrors).toHaveBeenCalledWith(request.__getResponse());
         });
 
         it('should parse request body', async () => {
@@ -258,7 +258,7 @@ describe('helpers', () => {
 
             await http(options);
 
-            expect(JSON.parse).toBeCalledWith(request.__getResponse().body);
+            expect(JSON.parse).toHaveBeenCalledWith(request.__getResponse().body);
         });
 
         it('should pass request body as is when could not parse', async () => {
@@ -272,7 +272,7 @@ describe('helpers', () => {
 
             const res = await http(options);
 
-            expect(JSON.parse).toBeCalledWith(request.__getResponse().body);
+            expect(JSON.parse).toHaveBeenCalledWith(request.__getResponse().body);
             expect(res).toEqual(request.__getResponse().body);
         });
 
