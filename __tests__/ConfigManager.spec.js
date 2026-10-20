@@ -55,22 +55,22 @@ describe('ConfigManager', () => {
         fs._readFile = jest.fn(() => testData);
         fs._writeFile = jest.fn();
         fse.mkdirp.mockClear();
-        yaml.safeDump = jest.fn((data) => data);
-        yaml.safeLoad = jest.fn((data) => data);
+        yaml.dump = jest.fn((data) => data);
+        yaml.load = jest.fn((data) => data);
     });
 
     describe('#_loadConfig', () => {
         it('should use default path when not specified', async () => {
             await manager._loadConfig();
 
-            expect(fs._readFile).toBeCalledWith(defaults.CF_CONFIG_PATH, 'utf8');
+            expect(fs._readFile).toHaveBeenCalledWith(defaults.CF_CONFIG_PATH, 'utf8');
         });
 
         it('should read from specific path when provided', async () => {
             const configFilePath = 'some/path';
             await manager._loadConfig(configFilePath);
 
-            expect(fs._readFile).toBeCalledWith(path.resolve(configFilePath), 'utf8');
+            expect(fs._readFile).toHaveBeenCalledWith(path.resolve(configFilePath), 'utf8');
         });
 
         it('should create file when it does not exist and write empty config to it', async () => {
@@ -84,9 +84,9 @@ describe('ConfigManager', () => {
 
             await manager._loadConfig();
 
-            expect(fs._readFile).toBeCalled();
-            expect(fse.mkdirp).toBeCalledWith(path.dirname(defaults.CF_CONFIG_PATH));
-            expect(fs._writeFile).toBeCalledWith(defaults.CF_CONFIG_PATH, emptyConfig, 'utf8');
+            expect(fs._readFile).toHaveBeenCalled();
+            expect(fse.mkdirp).toHaveBeenCalledWith(path.dirname(defaults.CF_CONFIG_PATH));
+            expect(fs._writeFile).toHaveBeenCalledWith(defaults.CF_CONFIG_PATH, emptyConfig, 'utf8');
         });
 
         it('should return empty config when file does not exist', async () => {
@@ -100,7 +100,7 @@ describe('ConfigManager', () => {
 
             const config = await manager._loadConfig();
 
-            expect(fs._readFile).toBeCalled();
+            expect(fs._readFile).toHaveBeenCalled();
             expect(config).toEqual(defaultConfig);
         });
 
@@ -114,10 +114,10 @@ describe('ConfigManager', () => {
         it('should read file when it exists and dump data from yaml', async () => {
             const config = await manager._loadConfig();
 
-            expect(fs._readFile).toBeCalled();
+            expect(fs._readFile).toHaveBeenCalled();
             expect(config).toEqual(fs._readFile()); // equals mock data
-            expect(fse.mkdirp).not.toBeCalled();
-            expect(fs._writeFile).not.toBeCalled();
+            expect(fse.mkdirp).not.toHaveBeenCalled();
+            expect(fs._writeFile).not.toHaveBeenCalled();
         });
     });
 
@@ -139,54 +139,54 @@ describe('ConfigManager', () => {
         it('should load config file from default config file path when not provided', async () => {
             await manager.loadConfig();
 
-            expect(manager._loadConfig).toBeCalledWith(defaults.CF_CONFIG_PATH);
+            expect(manager._loadConfig).toHaveBeenCalledWith(defaults.CF_CONFIG_PATH);
         });
 
         it('should load config file from provided file path when specified', async () => {
             const configFilePath = 'some/path';
             await manager.loadConfig({ configFilePath });
 
-            expect(manager._loadConfig).toBeCalledWith(configFilePath);
+            expect(manager._loadConfig).toHaveBeenCalledWith(configFilePath);
         });
 
         it('should not load config file when config is already loaded and configFilePath is same', async () => {
             await manager.loadConfig();
             await manager.loadConfig();
 
-            expect(manager._getConfigFilePath).toBeCalledTimes(1);
-            expect(manager._setConfigFilePath).toBeCalledTimes(1);
-            expect(manager._loadConfig).toBeCalledTimes(1);
+            expect(manager._getConfigFilePath).toHaveBeenCalledTimes(1);
+            expect(manager._setConfigFilePath).toHaveBeenCalledTimes(1);
+            expect(manager._loadConfig).toHaveBeenCalledTimes(1);
         });
 
         it('should reload config file when config is loaded and configFilePath is not the same', async () => {
             await manager.loadConfig();
             await manager.loadConfig({ configFilePath: 'some/path' });
 
-            expect(manager._getConfigFilePath).toBeCalledTimes(1);
-            expect(manager._setConfigFilePath).toBeCalledTimes(2);
-            expect(manager._loadConfig).toBeCalledTimes(2);
+            expect(manager._getConfigFilePath).toHaveBeenCalledTimes(1);
+            expect(manager._setConfigFilePath).toHaveBeenCalledTimes(2);
+            expect(manager._loadConfig).toHaveBeenCalledTimes(2);
         });
 
         it('should force load config file when forceLoad option is provided', async () => {
             await manager.loadConfig();
             await manager.loadConfig({ forceLoad: true });
 
-            expect(manager._getConfigFilePath).not.toBeCalled(); // forceLoad check precedes calling this method
-            expect(manager._setConfigFilePath).toBeCalledTimes(2);
-            expect(manager._loadConfig).toBeCalledTimes(2);
+            expect(manager._getConfigFilePath).not.toHaveBeenCalled(); // forceLoad check precedes calling this method
+            expect(manager._setConfigFilePath).toHaveBeenCalledTimes(2);
+            expect(manager._loadConfig).toHaveBeenCalledTimes(2);
         });
 
         it('should clear config manager before loading config', async () => {
             await manager.loadConfig();
 
-            expect(manager.clearConfig).toBeCalled();
+            expect(manager.clearConfig).toHaveBeenCalled();
         });
 
         it('should cache the config file path', async () => {
             const configFilePath = 'some/path';
             await manager.loadConfig({ configFilePath });
 
-            expect(manager._setConfigFilePath).toBeCalledWith(configFilePath);
+            expect(manager._setConfigFilePath).toHaveBeenCalledWith(configFilePath);
             expect(manager.configFilePath).toBe(configFilePath);
         });
 
@@ -194,11 +194,11 @@ describe('ConfigManager', () => {
             const configFilePath = 'some/path';
             await manager.loadConfig({ configFilePath });
 
-            expect(manager._loadConfig).toBeCalledWith(configFilePath);
-            expect(manager.addContext).toBeCalledTimes(_.keys(CONTEXTS.contexts).length);
+            expect(manager._loadConfig).toHaveBeenCalledWith(configFilePath);
+            expect(manager.addContext).toHaveBeenCalledTimes(_.keys(CONTEXTS.contexts).length);
             expect(manager.getAllContexts()).toEqual(CONTEXTS.contexts);
-            expect(JWTContext.createFromSerialized).toBeCalledWith(CONTEXTS.contexts.jwt);
-            expect(APIKeyContext.createFromSerialized).toBeCalledWith(CONTEXTS.contexts.apiKey);
+            expect(JWTContext.createFromSerialized).toHaveBeenCalledWith(CONTEXTS.contexts.jwt);
+            expect(APIKeyContext.createFromSerialized).toHaveBeenCalledWith(CONTEXTS.contexts.apiKey);
         });
 
         it('should throw on parsing context when context type is not valid', async () => {
@@ -206,13 +206,13 @@ describe('ConfigManager', () => {
 
             await expect(manager.loadConfig()).rejects.toThrow(CFError);
 
-            expect(manager._loadConfig).toBeCalled();
+            expect(manager._loadConfig).toHaveBeenCalled();
         });
 
         it('should set the current context if it exists after loading', async () => {
             await manager.loadConfig();
 
-            expect(manager._loadConfig).toBeCalled();
+            expect(manager._loadConfig).toHaveBeenCalled();
             expect(manager.getCurrentContext()).toEqual(CONTEXTS.contexts[CONTEXTS['current-context']]);
         });
     });
@@ -229,8 +229,8 @@ describe('ConfigManager', () => {
             const url = 'url';
             await manager.createContext({ apiKey: token, url });
 
-            expect(JWTContext.createFromToken).toBeCalledWith(token, url);
-            expect(APIKeyContext.createFromToken).not.toBeCalled();
+            expect(JWTContext.createFromToken).toHaveBeenCalledWith(token, url);
+            expect(APIKeyContext.createFromToken).not.toHaveBeenCalled();
         });
 
         it('should create APIKeyContext when apiKey is provided', async () => {
@@ -238,8 +238,8 @@ describe('ConfigManager', () => {
             const url = 'url';
             await manager.createContext({ apiKey: token, url });
 
-            expect(APIKeyContext.createFromToken).toBeCalledWith(token, url);
-            expect(JWTContext.createFromToken).not.toBeCalled();
+            expect(APIKeyContext.createFromToken).toHaveBeenCalledWith(token, url);
+            expect(JWTContext.createFromToken).not.toHaveBeenCalled();
         });
 
         it('should not set context name when not provided', async () => {
@@ -247,7 +247,7 @@ describe('ConfigManager', () => {
             const url = 'url';
             const context = await manager.createContext({ apiKey: token, url });
 
-            expect(APIKeyContext.createFromToken).toBeCalledWith(token, url);
+            expect(APIKeyContext.createFromToken).toHaveBeenCalledWith(token, url);
             expect(context.name).toBeUndefined();
         });
 
@@ -257,7 +257,7 @@ describe('ConfigManager', () => {
             const name = 'name';
             const context = await manager.createContext({ apiKey: token, url, name });
 
-            expect(APIKeyContext.createFromToken).toBeCalledWith(token, url);
+            expect(APIKeyContext.createFromToken).toHaveBeenCalledWith(token, url);
             expect(context.name).toBe(name);
         });
 
@@ -268,8 +268,8 @@ describe('ConfigManager', () => {
             const url = 'url';
             await manager.createContext({ apiKey: token, url });
 
-            expect(APIKeyContext.createFromToken).toBeCalledWith(token, url);
-            expect(validateContext).toBeCalled();
+            expect(APIKeyContext.createFromToken).toHaveBeenCalledWith(token, url);
+            expect(validateContext).toHaveBeenCalled();
         });
 
         it('should do a fallback in case there was a failure during user validation', async () => {
@@ -287,8 +287,8 @@ describe('ConfigManager', () => {
 
             await manager.createContext({ apiKey: token, url });
 
-            expect(_whoami.getUser).toBeCalledTimes(1);
-            expect(_whoami.getExecutionContext).toBeCalledTimes(1);
+            expect(_whoami.getUser).toHaveBeenCalledTimes(1);
+            expect(_whoami.getExecutionContext).toHaveBeenCalledTimes(1);
         });
 
         it('should set context onPrem when account has role "Admin"', async () => {
@@ -298,8 +298,8 @@ describe('ConfigManager', () => {
             const url = 'url';
             const context = await manager.createContext({ apiKey: token, url });
 
-            expect(APIKeyContext.createFromToken).toBeCalledWith(token, url);
-            expect(validateContext).toBeCalled();
+            expect(APIKeyContext.createFromToken).toHaveBeenCalledWith(token, url);
+            expect(validateContext).toHaveBeenCalled();
             expect(context.onPrem).toBeTruthy();
         });
     });
@@ -328,9 +328,9 @@ describe('ConfigManager', () => {
             manager._setConfigFilePath(configFilePath);
             await manager.persistConfig();
 
-            expect(manager._getConfigFilePath).toReturnWith(configFilePath);
-            expect(yaml.safeDump).toBeCalledWith(CONTEXTS);
-            expect(fs._writeFile).toBeCalledWith(configFilePath, CONTEXTS, 'utf8');
+            expect(manager._getConfigFilePath).toHaveReturnedWith(configFilePath);
+            expect(yaml.dump).toHaveBeenCalledWith(CONTEXTS);
+            expect(fs._writeFile).toHaveBeenCalledWith(configFilePath, CONTEXTS, 'utf8');
         });
 
         it('should throw when config is not loaded', async () => {
@@ -341,7 +341,7 @@ describe('ConfigManager', () => {
         it('should use cached config file path to save file', async () => {
             await manager.persistConfig();
 
-            expect(manager._getConfigFilePath).toBeCalled();
+            expect(manager._getConfigFilePath).toHaveBeenCalled();
         });
     });
 
