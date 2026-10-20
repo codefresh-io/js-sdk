@@ -51,21 +51,21 @@ steps:
   install_dependencies:
     title: 'Installing testing dependencies'
     stage: CI
-    image: codefresh/build-cli
+    image: node:24-trixie
     commands:
         - yarn install --frozen-lockfile
 
   eslint:
     title: 'Running linting logic'
     stage: CI
-    image: codefresh/build-cli
+    image: node:24-trixie
     commands:
         - yarn eslint
 
   unit-tests:
     stage: CI
     title: 'Running unit tests'
-    image: codefresh/build-cli
+    image: node:24-trixie
     commands:
         - yarn test
 
@@ -86,7 +86,7 @@ steps:
   create_release:
     stage: CD
     title: "Create github release"
-    image: codefresh/build-cli
+    image: node:24-trixie
     commands:
     - 'curl --fail -X POST -d ''{"tag_name":"v${{PACKAGE_VERSION}}","target_commitish":"${{CF_REVISION}}","name":"Codefresh V${{PACKAGE_VERSION}}"}'' -H "Content-Type: application/json" -H "Authorization: token ${{GITHUB_TOKEN}}" https://api.github.com/repos/codefresh-io/js-sdk/releases'
     when:
