@@ -1,0 +1,27 @@
+__tests__/workflows.logic.spec.js
+  s_8e3a9120c0aabb::t_ff93e6b707e552 1-52
+helpers/http.js
+  s_8e3a9120c0aabb::t_d1f29e6568be76 10-12
+package.json
+  s_8e3a9120c0aabb::t_6a407d3edb63ee 3
+lib/logic/workflows.logic.js
+  s_8e3a9120c0aabb::t_7fb0e313039654 13-14
+__tests__/helpers.spec.js
+  s_8e3a9120c0aabb::t_ac8bbc2ac3e732 279,284-293
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "83b6d19d73ac88f0c8804e74123108c8f7332193",
+  "prompts": {},
+  "sessions": {
+    "s_8e3a9120c0aabb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3f51759f-5c44-469f-bf41-47f167ebbb6e",
+        "model": "unknown"
+      },
+      "human_author": "andrii-codefresh <andrii@codefresh.io>"
+    }
+  }
+}
