@@ -1,0 +1,14 @@
+yarn.lock
+  h_51acfbafc7319b 12,91,101,119,128,283,378,1402,1886,2067,2101,2124,2360,2629,2764,2783,2894,2925,2930,3017,3050,3130,3714,3778,3804,3837,3916,4339,4344-4347,4720
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4b7b172d21b5ca6a0dc7da4177ecb23c5e90a17a",
+  "prompts": {},
+  "humans": {
+    "h_51acfbafc7319b": {
+      "author": "vitaliichyrka <vitalii.chyrka@codefresh.io>"
+    }
+  }
+}
