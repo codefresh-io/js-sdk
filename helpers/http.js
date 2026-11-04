@@ -7,7 +7,9 @@ const { version } = require('../package.json');
 
 const { handleErrors } = require('./error');
 
-const RETRY_STATUS_CODES = [502, 503, 504];
+// 520 and 530 (e.g. error 1001: DNS resolution error) are returned by Cloudflare
+// when it fails to reach the origin, so the request did not reach the API and can be retried
+const RETRY_STATUS_CODES = [502, 503, 504, 520, 530];
 const RETRY_STRATEGY = (err, response) => {
     if ((process.env.DEBUG || '').startsWith(defaults.DEBUG_PATTERN)) {
         debug('retry disabled: given DEBUG option');

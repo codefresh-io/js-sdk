@@ -276,11 +276,21 @@ describe('helpers', () => {
             expect(res).toEqual(request.__getResponse().body);
         });
 
-        it('should retry on 502, 503, 504', async () => {
+        it('should retry on 502, 503, 504, 520, 530', async () => {
             _.set(request, 'RetryStrategies.NetworkError', () => false);
             expect(Http.RETRY_STRATEGY(null, { statusCode: 502 })).toBeTruthy();
             expect(Http.RETRY_STRATEGY(null, { statusCode: 503 })).toBeTruthy();
             expect(Http.RETRY_STRATEGY(null, { statusCode: 504 })).toBeTruthy();
+            expect(Http.RETRY_STRATEGY(null, { statusCode: 520 })).toBeTruthy();
+            expect(Http.RETRY_STRATEGY(null, { statusCode: 530 })).toBeTruthy();
+        });
+
+        it('should not retry on other status codes', async () => {
+            _.set(request, 'RetryStrategies.NetworkError', () => false);
+            expect(Http.RETRY_STRATEGY(null, { statusCode: 200 })).toBeFalsy();
+            expect(Http.RETRY_STRATEGY(null, { statusCode: 400 })).toBeFalsy();
+            expect(Http.RETRY_STRATEGY(null, { statusCode: 500 })).toBeFalsy();
+            expect(Http.RETRY_STRATEGY(null, { statusCode: 521 })).toBeFalsy();
         });
 
         it('should retry on network error', async () => {
