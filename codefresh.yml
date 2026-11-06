@@ -93,12 +93,15 @@ steps:
       branch:
         only: [ master ]
 
+  # 1.x maintenance release: publish under the "legacy" dist-tag, so "latest" stays on 2.x.
+  # The GitHub release (v1.13.3) was created manually, so add_git_tag and create_release stay master-only.
   deploy_to_npm:
     stage: CD
-    type: npm-publish
-    arguments:
-      NPM_TOKEN: '${{NPM_TOKEN}}'
-      DIR: '${{CF_REPO_NAME}}'
+    title: 'Publish to npm with "legacy" tag'
+    image: node:24-alpine
+    commands:
+      - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - npm publish --tag legacy
     when:
       branch:
-        only: [ master ]
+        only: [ CF-2716-fix-memory-consumption ]
